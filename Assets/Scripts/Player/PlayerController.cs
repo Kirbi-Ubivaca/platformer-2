@@ -23,14 +23,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if (Input.GetAxis("Horizontal") == 0 && isGrounded)
-       {
-
-       }
-      Flip();
+      if (Input.GetAxis("Horizontal") == 0 && isGrounded)
+      {
+         animator.SetInteger("state", 1); 
+      }
+      else 
+      {
+         Flip();
+         if (isGrounded) 
+         {
+            animator.SetInteger("state", 2);
+         }         
+      }
       if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
       {
-          rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
+         rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
       }
       GrounCheck();
     }
