@@ -12,12 +12,15 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpHeight;
     public Transform groundCheck;
+    public int HealthPoints;
+    int CurrentHealthPoints;
  
     // Start is called before the first frame update
     void Start()
     {
        rb = GetComponent<Rigidbody2D>();
        animator = GetComponent<Animator>();
+       CurrentHealthPoints = HealthPoints;
     }
 
     // Update is called once per frame
@@ -60,4 +63,22 @@ public class PlayerController : MonoBehaviour
        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.2f);
        isGrounded = colliders.Length > 1;
     }
+
+   public void RecountHealthPoints(int deltaHealthPoints)
+   {
+      CurrentHealthPoints += deltaHealthPoints;
+      if (CurrentHealthPoints <= 0)
+      {
+         StartCoroutine(OnHit();)
+      }
+      if (CurrentHealthPoints <= 0) {
+         GetComponent<CapsuleCollider2D>().enabled = false;
+      }
+   }
+      IEnumerator OnHit()
+      {
+         SpriteRenderer sr = GetComponent<SpriteRenderer>();
+         sr.color = new Color(1f, sr.color.g -0.02f, sr.color.b - 0.02f);
+         yield return new WaitForSecond(0.02f);
+      }
 }
